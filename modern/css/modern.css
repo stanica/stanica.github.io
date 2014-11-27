@@ -1,0 +1,73 @@
+* {
+	font-family: 'Lato', sans-serif;
+	//border: 1px solid red !important;
+}
+html { 
+  	background: url("../images/bg.png") no-repeat center center fixed; 
+  	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+}
+h1 {
+	color: rgba(255, 255, 255, 0.7);
+	font-weight: 100;
+	font-size: 52px;
+}
+h1:hover{
+	color: rgba(255, 255, 255, 1);
+}
+h2 {
+	color: rgba(255, 255, 255, 0.25);
+	font-weight: 300;
+	
+}
+body {
+	background-color: rgba(255, 255, 255, 0);
+}
+a {
+	color: #5DA1DB;
+}
+a:hover {
+	text-decoration: none;
+}
+a:link {
+   text-decoration: none;
+}
+.title{
+	
+}
+.subtitle{
+	margin-top: -17px;	
+}
+.line{
+	border-left: 1px solid rgba(255, 255, 255, 0.5);
+	height: 110px;
+}
+.menu {
+	font-size: 16px;
+	padding-top: 50px;
+	color: rgba(255, 255, 255, 0.7);
+}
+.header{
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.selected{
+	padding-bottom: 10px;
+	-webkit-box-shadow:inset 0px 45px 0px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow:inset 0px -45px 0px 0px rgba(0, 0, 0, 0.5);
+    box-shadow:inset 0px -45px 0px 0px rgba(0, 0, 0, 0.5);
+	color: white;
+}
+.item{
+	top: 2em;
+	background-color: rgba(0, 0, 0, 0.5);
+	height: 30em;
+	margin: 1.2em 1.2em 1.2em 1.2em;
+	outline: 5px solid rgba(255, 255, 255, 0.1);
+
+}
+.item-title{
+	padding: 20px 0px 20px 0px;
+	background-color: hsl(100, 10%, 10%);
+}

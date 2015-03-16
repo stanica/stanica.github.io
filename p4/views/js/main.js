@@ -468,7 +468,8 @@ var resizePizzas = function(size) {
 	  var dx = determineDx(pizzaContainer[0], size);		
 	  
 	  // New width is the same of each element so we don't need to recalculate.	
-	  var newwidth = (pizzaContainer[0].offsetWidth + dx) + 'px';	
+	  var newwidth = (pizzaContainer[0].offsetWidth + dx) + 'px';
+	  
 		for (var i = 0; i < pizzaContainerLength; i++) {
 			pizzaContainer[i].style.width = newwidth;
 		}

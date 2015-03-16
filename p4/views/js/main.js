@@ -288,43 +288,43 @@ var nouns = ["animals", "everyday", "fantasy", "gross", "horror", "jewelry", "pl
 // Generates random numbers for getAdj and getNoun functions and returns a new pizza name
 function generator(adj, noun) {
   var adjectives = getAdj(adj);
-  var nouns = getNoun(noun);
-  var randomAdjective = parseInt(Math.random() * adjectives.length);
-  var randomNoun = parseInt(Math.random() * nouns.length);
+  var nouns = getNoun(noun);  // Generate a random number between 0 and the length of the array stored in adjectives
+  var randomAdjective = parseInt(Math.random() * adjectives.length);  // Generate a random number between 0 and the length of the array stored in nouns  
+  var randomNoun = parseInt(Math.random() * nouns.length);  // Create the pizza name using randomly selected words in the adjective and noun arrays  
   var name = "The " + adjectives[randomAdjective].capitalize() + " " + nouns[randomNoun].capitalize();
   return name;
 }
 
 // Chooses random adjective and random noun
-function randomName() {
-  var randomNumberAdj = parseInt(Math.random() * adjectives.length);
-  var randomNumberNoun = parseInt(Math.random() * nouns.length);
+function randomName() {  // Generate a number between 0 and the length of adjectives array   
+  var randomNumberAdj = parseInt(Math.random() * adjectives.length);  // Generate a number between 0 and the length of noun array   
+  var randomNumberNoun = parseInt(Math.random() * nouns.length);  // Call the generator method with a random adjective and noun  
   return generator(adjectives[randomNumberAdj], nouns[randomNumberNoun]);
 }
 
 // These functions return a string of a random ingredient from each respective category of ingredients.
-var selectRandomMeat = function() {
+var selectRandomMeat = function() {  // Return a random meat at some index between 0 and the length of the pizzaIngredients.meat array.  
   var randomMeat = pizzaIngredients.meats[Math.floor((Math.random() * pizzaIngredients.meats.length))];
   return randomMeat;
 };
 
 var selectRandomNonMeat = function() {
-  var randomNonMeat = pizzaIngredients.nonMeats[Math.floor((Math.random() * pizzaIngredients.nonMeats.length))];
+   // Return a random non-meat at some index between 0 and the length of the pizzaIngredients.nonMeats array.    var randomNonMeat = pizzaIngredients.nonMeats[Math.floor((Math.random() * pizzaIngredients.nonMeats.length))];
   return randomNonMeat;
 };
 
 var selectRandomCheese = function() {
-  var randomCheese = pizzaIngredients.cheeses[Math.floor((Math.random() * pizzaIngredients.cheeses.length))];
+   // Return a random cheese at some index between 0 and the length of the pizzaIngredients.cheeses array.    var randomCheese = pizzaIngredients.cheeses[Math.floor((Math.random() * pizzaIngredients.cheeses.length))];
   return randomCheese;
 };
 
 var selectRandomSauce = function() {
-  var randomSauce = pizzaIngredients.sauces[Math.floor((Math.random() * pizzaIngredients.sauces.length))];
+   // Return a random sauce at some index between 0 and the length of the pizzaIngredients.sauces array.    var randomSauce = pizzaIngredients.sauces[Math.floor((Math.random() * pizzaIngredients.sauces.length))];
   return randomSauce;
 };
 
 var selectRandomCrust = function() {
-  var randomCrust = pizzaIngredients.crusts[Math.floor((Math.random() * pizzaIngredients.crusts.length))];
+   // Return a random crust at some index between 0 and the length of the pizzaIngredients.crusts array.    var randomCrust = pizzaIngredients.crusts[Math.floor((Math.random() * pizzaIngredients.crusts.length))];
   return randomCrust;
 };
 
@@ -449,11 +449,9 @@ var resizePizzas = function(size) {
   }
 
   // Iterates through pizza elements on the page and changes their widths
-  function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+  function changePizzaSizes(size) {		// Get array of elements with randomPizzaContainer class. 	// Using getElementsByClassName is slightly faster than using querySelectorAll().	var pizzaContainer = document.getElementsByClassName("randomPizzaContainer");		// Length of container doesn't change so we don't have to recalculate.	var pizzaContainerLength = pizzaContainer.length;		// Difference is the same for each element so we don't need to recalculate.	var dx = determineDx(pizzaContainer[0], size);		// New width is the same of each element so we don't need to recalculate.	var newwidth = (pizzaContainer[0].offsetWidth + dx) + 'px';	
+    for (var i = 0; i < pizzaContainerLength; i++) {
+		pizzaContainer[i].style.width = newwidth;
     }
   }
 
@@ -500,11 +498,11 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 function updatePositions() {
   frame++;
-  window.performance.mark("mark_start_frame");
-
+  window.performance.mark("mark_start_frame");  //  scrollTop doesn't change so we don't have to recalculate  
+  var cachedScrollTop = document.body.scrollTop;
   var items = document.querySelectorAll('.mover');
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    var phase = Math.sin((cachedScrollTop / 1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 

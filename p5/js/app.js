@@ -192,7 +192,7 @@ var ViewModel = function () {
                 var response = JSON.parse(xmlhttp.responseText);
                 var status = response.currently.summary;
                 var temp = response.currently.temperature;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status;
+                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status);
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

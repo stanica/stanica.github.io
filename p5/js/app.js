@@ -5,13 +5,12 @@ var Marker = function (marker) {
 	self.city = ko.observable('');
 	self.image = ko.observable('');
 	self.weather = ko.observable('Grabbing weather..');
-    self.hasWeather = false;
     self.color = ko.observable('');
     self.infowindow;
 	self.lat = ko.observable(marker.getPosition().lat());
 	self.lng = ko.observable(marker.getPosition().lng());
 	self.content = ko.computed(function(){
-		return "<div><img src=\""+self.image()+"\" alt=\"No image\"><br>" + self.city() + "<br><br>" + self.weather() + "</div>";
+		return "<div><img src=\""+self.image()+"\" alt=\"Map not found\"><br>" + self.city() + "<br><br>" + self.weather() + "</div>";
 	});
 }
 
@@ -159,8 +158,6 @@ var ViewModel = function () {
             self.selectedMarker("");
             self.setDeselected(self.markersList()[index]);
         }
-        
-        
     }
     
     self.clearFilter = function () {
@@ -212,7 +209,7 @@ var ViewModel = function () {
         self.geocoder.geocode({'latLng': latlng}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
-                    self.map.setZoom(13);
+                    self.map.setZoom(14);
                     location.city(results[1].formatted_address);
                     location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
                     location.infowindow = new google.maps.InfoWindow();
@@ -235,7 +232,7 @@ var ViewModel = function () {
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},
-                  zoom: 13
+                  zoom: 14
                 };
                 self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
                 //Add marker when map is clicked
@@ -249,7 +246,7 @@ var ViewModel = function () {
             console.log("Geolocation is not supported by this browser.");
             var mapOptions = {
               center: { lat: 40.730885, lng: -73.997383},
-              zoom: 13
+              zoom: 14
             };
             self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
             //Add marker when map is clicked

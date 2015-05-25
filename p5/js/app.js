@@ -217,7 +217,7 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(response.times[0].estimate / 60) + ":" + response.times[0].estimate - (Math.floor(response.times[0].estimate / 60) * 60);            
+                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(response.times[0].estimate / 60) + ":" + response.times[0].estimate - (Math.floor(response.times[0].estimate / 60) * 60));            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

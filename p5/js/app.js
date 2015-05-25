@@ -225,9 +225,15 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var estimate = parseInt(response.times[0].estimate);
-                console.log(estimate, response.times[0].display_name, response, " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));
-                marker.timeEstimate(response.times[0].display_name + " available in " + Math.floor(estimate / 60) + ":" + (estimate - (Math.floor(estimate / 60) * 60)));            
+                var minutes = parseInt(Math.floor(response.times[0].estimate/60));
+                var seconds = parseInt(response.times[0].estimate) - (minutes * 60);
+                if (seconds < 10){
+                  seconds = '0' + seconds;
+                } 
+                if (minutes < 10){
+                   minutes = '0' + minutes;
+                }
+                marker.timeEstimate(response.times[0].display_name + " available in " + minutes ":" + seconds);            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

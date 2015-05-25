@@ -201,7 +201,7 @@ var ViewModel = function () {
                 marker.weather("Weather data not found. Check your internet");
             }
 		}
-		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng(),true);
+		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + function(data){console.log('test')},true);
         console.log("https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng());
 		xmlhttp.send();
 	}

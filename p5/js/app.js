@@ -226,7 +226,7 @@ var ViewModel = function () {
                 var response = JSON.parse(xmlhttp.responseText);
                 var estimate = parseInt(response.times[0].estimate);
                 console.log(estimate, response.times[0].display_name, response, " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));
-                marker.timeEstimate(response.times[0].display_name + " available in " + Math.floor(estimate / 60));            
+                marker.timeEstimate(response.times[0].display_name + " available in " + Math.floor(estimate / 60) + ":" + (estimate - (Math.floor(estimate / 60) * 60)));            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

@@ -71,16 +71,14 @@ html, body, .container{
     .top{
         width: 2%;
         position: fixed;
-        color: white;
-        background-color: black;
+        color: black;
         cursor: pointer;
     }
     .bot {
         width: 2%;
         position: fixed;
         bottom: 10px;
-        color: white;
-        background-color: black;
+        color: black;
         cursor: pointer;
     }
 

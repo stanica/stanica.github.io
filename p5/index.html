@@ -22,7 +22,7 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="col-left" data-bind="foreach: segmentedMarkersList, visible: markersList().length > 0">
+        <div class="col-left" data-bind="foreach: filteredMarkers, visible: markersList().length > 0">
             <div class="list-item">
                 <div class="item-title" data-bind="click: $parent.setSelected($data), text: city, style: { color: $data.color()}">
                 </div>

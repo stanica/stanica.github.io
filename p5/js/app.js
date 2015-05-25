@@ -3,10 +3,15 @@ var Marker = function (marker) {
     var self = this;
 	self.marker = marker;
 	self.city = ko.observable('');
+	self.image = ko.observable('');
+	self.weather = ko.observable('');
     self.color = ko.observable('');
     self.infowindow;
 	self.lat = ko.observable(marker.getPosition().lat());
 	self.lng = ko.observable(marker.getPosition().lng());
+	self.content = ko.computed(function(){
+		return "<img src=\""+self.image()+"\" alt=\"No image\"></br>" + self.city() + "</br>" + self.weather();
+	});
 }
 
 var ViewModel = function () {
@@ -68,6 +73,7 @@ var ViewModel = function () {
     self.addMarker = function (marker) {
         var newMarker = new Marker(marker);
         self.getAddress(newMarker);
+		self.getWeather(newMarker.lat(), newMarker.lng(), newMarker);
         self.markersList.push(newMarker);
         google.maps.event.addListener(marker, 'click', function(event) {
             self.markersList().forEach(function(item){
@@ -160,11 +166,36 @@ var ViewModel = function () {
     }
     
     self.filteredMarkers = ko.computed(function() {
-        return ko.utils.arrayFilter(self.markersList(), function(item) {
+        return ko.utils.arrayFilter(self.segmentedMarkersList(), function(item) {
             return item.city().toLowerCase().indexOf(self.filterText().toLowerCase()) >= 0;
         });
     });
+	
+	self.filteredSegmentedMarkers = ko.computed(function(){
+		//self.segmentedMarkersList(self.filteredMarkers().slice(self.startIndex, self.startIndex + self.maxLength));
+		return self.filteredMarkers().slice(self.startIndex, self.startIndex + self.maxLength);
+	});
     
+	self.getWeather = function (lat, lng, marker) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}
+		else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+				var response = JSON.parse(xmlhttp.responseText);
+				var weather = response.weather[0].description;
+				marker.weather(weather);
+				console.log(response);
+			}
+		}
+		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lng,true);
+		xmlhttp.send();
+	}
+	
     // Taken from Google Maps API geocoder example
     self.getAddress = function(location){
         var lat = location.lat();
@@ -175,8 +206,10 @@ var ViewModel = function () {
           if (results[1]) {
             self.map.setZoom(13);
             location.city(results[1].formatted_address);
+			location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
             location.infowindow = new google.maps.InfoWindow();
-            location.infowindow.setContent(results[1].formatted_address);
+            //location.infowindow.setContent(results[1].formatted_address);
+			location.infowindow.setContent(location.content());
             location.infowindow.open(self.map, self.selectedMarker().marker);
           } else {
             alert('No results found');

@@ -190,9 +190,9 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var status = response.weather[0].description[0].toUpperCase() + response.weather[0].description.substring(1);
-                var temp = response.main.temp;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°C </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
+                var status = response.currently.summary;
+                var temp = response.currently.temperature;
+                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -201,7 +201,7 @@ var ViewModel = function () {
                 marker.weather("Weather data not found. Check your internet");
             }
 		}
-		xmlhttp.open("GET","https://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
+		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng(),true);
 		xmlhttp.send();
 	}
     
@@ -217,7 +217,8 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(response.times[0].estimate / 60) + ":" + response.times[0].estimate - (Math.floor(response.times[0].estimate / 60) * 60));            
+                var estimate = parseInt(response.times[0].estimate);
+                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

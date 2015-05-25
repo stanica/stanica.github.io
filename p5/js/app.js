@@ -181,18 +181,29 @@ var ViewModel = function () {
     
     // Uses open weather map API
 	self.getWeather = function (marker) {
-		
-        var that = this;
-        that.updateWeather = function(data){
-            console.log(marker.city());
-            console.log("working");
-            console.log(JSON.parse(data));
-        }
-        
-        script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = "https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=self.getWeather.updateWeather";
-        
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}
+		else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                var response = JSON.parse(xmlhttp.responseText);
+                var status = response.weather[0].description[0].toUpperCase() + response.weather[0].description.substring(1);
+                var temp = response.main.temp;
+                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°C </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
+                if(marker.infowindow){
+                    marker.infowindow.setContent(marker.content());
+                }
+            }
+            else if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+                marker.weather("Weather data not found. Check your internet");
+            }
+		}
+		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
+		xmlhttp.send();
 	}
     
     // Uses UBER api

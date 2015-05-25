@@ -179,7 +179,7 @@ var ViewModel = function () {
 		return self.filteredMarkers().slice(self.startIndex, self.startIndex + self.maxLength);
 	});
     
-    // Uses open weather map API
+    // Uses world weather online API
 	self.getWeather = function (marker) {
 		var xmlhttp;
         var that = this;

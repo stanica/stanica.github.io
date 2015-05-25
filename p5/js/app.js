@@ -233,7 +233,7 @@ var ViewModel = function () {
                 if (minutes < 10){
                    minutes = '0' + minutes;
                 }
-                marker.timeEstimate(response.times[0].display_name + " available in " + minutes ":" + seconds);            
+                marker.timeEstimate(response.times[0].display_name + " available in " + minutes + ":" + seconds);            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

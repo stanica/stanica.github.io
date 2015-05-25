@@ -4,13 +4,14 @@ var Marker = function (marker) {
 	self.marker = marker;
 	self.city = ko.observable('');
 	self.image = ko.observable('');
-	self.weather = ko.observable('');
+	self.weather = ko.observable('Grabbing weather..');
+    self.hasWeather = false;
     self.color = ko.observable('');
     self.infowindow;
 	self.lat = ko.observable(marker.getPosition().lat());
 	self.lng = ko.observable(marker.getPosition().lng());
 	self.content = ko.computed(function(){
-		return "<img src=\""+self.image()+"\" alt=\"No image\"></br>" + self.city() + "</br>" + self.weather();
+		return "<div><img src=\""+self.image()+"\" alt=\"No image\"><br>" + self.city() + "<br><br>" + self.weather() + "</div>";
 	});
 }
 
@@ -72,12 +73,12 @@ var ViewModel = function () {
     
     self.addMarker = function (marker) {
         var newMarker = new Marker(marker);
-        self.getAddress(newMarker);
-		self.getWeather(newMarker.lat(), newMarker.lng(), newMarker);
+		self.getWeather(newMarker);
         self.markersList.push(newMarker);
         google.maps.event.addListener(marker, 'click', function(event) {
             self.markersList().forEach(function(item){
                 if(item.marker === marker){
+                    console.log(item.content());
                     self.setSelected(item);
                 }
             });
@@ -86,6 +87,7 @@ var ViewModel = function () {
             self.startIndex++;
         }
         self.segmentedMarkersList(self.markersList().slice(self.startIndex, self.startIndex + self.maxLength));
+        self.getAddress(newMarker);
     }
     
     self.removeMarker = function () {
@@ -176,7 +178,7 @@ var ViewModel = function () {
 		return self.filteredMarkers().slice(self.startIndex, self.startIndex + self.maxLength);
 	});
     
-	self.getWeather = function (lat, lng, marker) {
+	self.getWeather = function (marker) {
 		var xmlhttp;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp=new XMLHttpRequest();
@@ -185,14 +187,20 @@ var ViewModel = function () {
 			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 		}
 		xmlhttp.onreadystatechange=function() {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-				var response = JSON.parse(xmlhttp.responseText);
-				var weather = response.weather[0].description;
-				marker.weather(weather);
-				console.log(response);
-			}
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                var response = JSON.parse(xmlhttp.responseText);
+                var status = response.weather[0].description[0].toUpperCase() + response.weather[0].description.substring(1);
+                var temp = response.main.temp;
+                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°C </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
+                if(marker.infowindow){
+                    marker.infowindow.setContent(marker.content());
+                }
+            }
+            else if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+                marker.weather("Weather data not found. Check your internet");
+            }
 		}
-		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+lat+"&lon="+lng,true);
+		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
 		xmlhttp.send();
 	}
 	
@@ -202,30 +210,27 @@ var ViewModel = function () {
         var lng = location.lng();
         var latlng = new google.maps.LatLng(lat, lng);
         self.geocoder.geocode({'latLng': latlng}, function(results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-          if (results[1]) {
-            self.map.setZoom(13);
-            location.city(results[1].formatted_address);
-			location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
-            location.infowindow = new google.maps.InfoWindow();
-            //location.infowindow.setContent(results[1].formatted_address);
-			location.infowindow.setContent(location.content());
-            location.infowindow.open(self.map, self.selectedMarker().marker);
-          } else {
-            alert('No results found');
-          }
-        } else {
-          alert('Geocoder failed due to: ' + status);
-        }
+            if (status == google.maps.GeocoderStatus.OK) {
+                if (results[1]) {
+                    self.map.setZoom(13);
+                    location.city(results[1].formatted_address);
+                    location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
+                    location.infowindow = new google.maps.InfoWindow();
+                    location.infowindow.setContent(location.content());
+                    location.infowindow.open(self.map, self.selectedMarker().marker);
+                } else {
+                    alert('No results found');
+                }
+            } else {
+                alert('Geocoder failed due to: ' + status);
+            }
         });
     }
     
     //Initialize page by setting up map and listeners
-    self.init = function () {  
-        
-    self.geocoder = new google.maps.Geocoder();
-    self.infowindow = new google.maps.InfoWindow();
-        /*
+    self.init = function () {   
+        self.geocoder = new google.maps.Geocoder();
+        self.infowindow = new google.maps.InfoWindow();
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
@@ -253,19 +258,6 @@ var ViewModel = function () {
                 self.addMarker(marker);
             });
         }
-        */
-        
-        var mapOptions = {
-              center: { lat: 40.730885, lng: -73.997383},
-              zoom: 13
-            };
-            self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
-            //Add marker when map is clicked
-            google.maps.event.addListener(self.map, 'click', function(event) {
-                var marker = new google.maps.Marker({position: event.latLng, map: self.map});
-                self.addMarker(marker);
-            });
-        
     }
 }
 

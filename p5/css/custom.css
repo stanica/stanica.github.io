@@ -109,3 +109,11 @@ html, body, .container{
 .item-clear:hover {
     font-weight: bold;
 }
+
+.temp-status {
+    float: left;
+}
+
+.temp-icon {
+    margin-top: -20px;
+}

@@ -4,7 +4,8 @@ var Marker = function (marker) {
 	self.marker = marker;
 	self.city = ko.observable('');
 	self.image = ko.observable('');
-	self.weather = ko.observable('Grabbing weather..');
+	self.weather = ko.observable('Grabbing weather...');
+    self.timeEstimate = ko.observable('Grabbing time estimate...');
     self.color = ko.observable('');
     self.infowindow;
 	self.lat = ko.observable(marker.getPosition().lat());
@@ -58,6 +59,7 @@ var ViewModel = function () {
             marker.infowindow.open(self.map, marker.marker);
         }
         self.selectedMarker(marker);
+        self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
         self.markersList()[self.markersList().indexOf(marker)].color("#33CC33");
     }
     
@@ -66,6 +68,7 @@ var ViewModel = function () {
             self.markersList()[self.markersList().indexOf(self.selectedMarker())].color("black");
             if(self.selectedMarker().infowindow){
                 self.selectedMarker().infowindow.close();
+                self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/red-dot.png");
             }
         }
     }
@@ -73,11 +76,11 @@ var ViewModel = function () {
     self.addMarker = function (marker) {
         var newMarker = new Marker(marker);
 		self.getWeather(newMarker);
+        self.getUberTimeEstimate(newMarker);
         self.markersList.push(newMarker);
         google.maps.event.addListener(marker, 'click', function(event) {
             self.markersList().forEach(function(item){
                 if(item.marker === marker){
-                    console.log(item.content());
                     self.setSelected(item);
                 }
             });
@@ -175,6 +178,7 @@ var ViewModel = function () {
 		return self.filteredMarkers().slice(self.startIndex, self.startIndex + self.maxLength);
 	});
     
+    // Uses open weather map API
 	self.getWeather = function (marker) {
 		var xmlhttp;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -200,6 +204,33 @@ var ViewModel = function () {
 		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
 		xmlhttp.send();
 	}
+    
+    // Uses UBER api
+    self.getUberTimeEstimate = function (marker) {
+		var xmlhttp;
+		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+			xmlhttp=new XMLHttpRequest();
+		}
+		else {// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                var response = JSON.parse(xmlhttp.responseText);
+                console.log(response);
+                
+                if(marker.infowindow){
+                    marker.infowindow.setContent(marker.content());
+                }
+            }
+            else if(xmlhttp.readyState==4 && xmlhttp.status!=200){
+                marker.weather("Uber data not found. Check your internet");
+            }
+		}
+		xmlhttp.open("GET","https://api.uber.com/v1/estimates/time?start_latitude=" + marker.lat() + "&start_longitude=" + marker.lng(),true);
+        xmlhttp.setRequestHeader("Authorization", "RN3VFOEudx5K5FeYkKGIdGFwXfOwd5YSGq4ax-0N");
+		xmlhttp.send();
+	}
 	
     // Taken from Google Maps API geocoder example
     self.getAddress = function(location){
@@ -209,7 +240,7 @@ var ViewModel = function () {
         self.geocoder.geocode({'latLng': latlng}, function(results, status) {
             if (status == google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
-                    self.map.setZoom(14);
+                    self.map.setZoom(13);
                     location.city(results[1].formatted_address);
                     location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
                     location.infowindow = new google.maps.InfoWindow();
@@ -228,16 +259,17 @@ var ViewModel = function () {
     self.init = function () {   
         self.geocoder = new google.maps.Geocoder();
         self.infowindow = new google.maps.InfoWindow();
-        if (navigator.geolocation) {
+        //if (navigator.geolocation) {
+        if(2==3){
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},
-                  zoom: 14
+                  zoom: 13
                 };
                 self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
                 //Add marker when map is clicked
                 google.maps.event.addListener(self.map, 'click', function(event) {
-                var marker = new google.maps.Marker({position: event.latLng, map: self.map});
+                    var marker = new google.maps.Marker({position: event.latLng, map: self.map});
                     self.addMarker(marker);
                 });
             });
@@ -246,12 +278,12 @@ var ViewModel = function () {
             console.log("Geolocation is not supported by this browser.");
             var mapOptions = {
               center: { lat: 40.730885, lng: -73.997383},
-              zoom: 14
+              zoom: 13
             };
             self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
             //Add marker when map is clicked
             google.maps.event.addListener(self.map, 'click', function(event) {
-            var marker = new google.maps.Marker({position: event.latLng, map: self.map});
+                var marker = new google.maps.Marker({position: event.latLng, map: self.map});
                 self.addMarker(marker);
             });
         }

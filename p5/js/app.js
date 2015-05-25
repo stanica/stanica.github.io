@@ -181,36 +181,16 @@ var ViewModel = function () {
     
     // Uses open weather map API
 	self.getWeather = function (marker) {
-		var xmlhttp;
-        var that = this;
-        that.marker = marker;
-		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-			xmlhttp=new XMLHttpRequest();
-		}
-		else {// code for IE6, IE5
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function() {
-            if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                var response = JSON.parse(xmlhttp.responseText);
-                var status = response.currently.summary;
-                var temp = response.currently.temperature;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status);
-                if(marker.infowindow){
-                    marker.infowindow.setContent(marker.content());
-                }
-            }
-            else if(xmlhttp.readyState==4 && xmlhttp.status!=200){
-                marker.weather("Weather data not found. Check your internet");
-            }
-		}
+		
         
         function updateWeather(data) {
             console.log(marker.city());
         }
-		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=updateWeather",true);
-        console.log("https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng());
-		xmlhttp.send();
+        
+        script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=updateWeather";
+        
 	}
     
     // Uses UBER api

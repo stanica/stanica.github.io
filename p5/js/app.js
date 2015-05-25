@@ -185,6 +185,8 @@ var ViewModel = function () {
         
         function updateWeather(data) {
             console.log(marker.city());
+            console.log("working");
+            console.log(JSON.parse(data));
         }
         
         script = document.createElement("script");

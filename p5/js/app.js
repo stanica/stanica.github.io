@@ -59,7 +59,7 @@ var ViewModel = function () {
             marker.infowindow.open(self.map, marker.marker);
         }
         self.selectedMarker(marker);
-        self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
+        self.selectedMarker().marker.setIcon("https://maps.google.com/mapfiles/ms/icons/green-dot.png");
         self.markersList()[self.markersList().indexOf(marker)].color("#33CC33");
     }
     
@@ -68,7 +68,7 @@ var ViewModel = function () {
             self.markersList()[self.markersList().indexOf(self.selectedMarker())].color("black");
             if(self.selectedMarker().infowindow){
                 self.selectedMarker().infowindow.close();
-                self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/red-dot.png");
+                self.selectedMarker().marker.setIcon("https://maps.google.com/mapfiles/ms/icons/red-dot.png");
             }
         }
     }
@@ -182,8 +182,8 @@ var ViewModel = function () {
     // Uses open weather map API
 	self.getWeather = function (marker) {
 		
-        
-        function updateWeather(data) {
+        var that = this;
+        that.updateWeather(data) {
             console.log(marker.city());
             console.log("working");
             console.log(JSON.parse(data));
@@ -191,7 +191,7 @@ var ViewModel = function () {
         
         script = document.createElement("script");
         script.type = "text/javascript";
-        script.src = "https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=updateWeather";
+        script.src = "https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=self.getWeather.updateWeather";
         
 	}
     

@@ -228,7 +228,7 @@ var ViewModel = function () {
             }
 		}
 		xmlhttp.open("GET","https://api.uber.com/v1/estimates/time?start_latitude=" + marker.lat() + "&start_longitude=" + marker.lng(),true);
-        xmlhttp.setRequestHeader("Authorization", "RN3VFOEudx5K5FeYkKGIdGFwXfOwd5YSGq4ax-0N");
+        xmlhttp.setRequestHeader("Authorization", "Token RN3VFOEudx5K5FeYkKGIdGFwXfOwd5YSGq4ax-0N");
 		xmlhttp.send();
 	}
 	

@@ -11,7 +11,7 @@ var Marker = function (marker) {
 	self.lat = ko.observable(marker.getPosition().lat());
 	self.lng = ko.observable(marker.getPosition().lng());
 	self.content = ko.computed(function(){
-		return "<div><img src=\""+self.image()+"\" alt=\"Map not found\"><br>" + self.city() + "<br><br>" + self.weather() + "</div>";
+		return "<div><img src=\""+self.image()+"\" alt=\"Map not found\"><br>" + self.city() + "<br><br>" + self.weather() + "<br>" + self.timeEstimate() + "</div>";
 	});
 }
 
@@ -201,7 +201,7 @@ var ViewModel = function () {
                 marker.weather("Weather data not found. Check your internet");
             }
 		}
-		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
+		xmlhttp.open("GET","https://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
 		xmlhttp.send();
 	}
     
@@ -217,8 +217,7 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                console.log(response);
-                
+                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(response.times[0].estimate / 60) + ":" + response.times[0].estimate - (Math.floor(response.times[0].estimate / 60) * 60);            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }

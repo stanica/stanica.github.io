@@ -193,7 +193,6 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                console.log(response);
                 var status = response.data.current_condition[0].weatherDesc[0].value;
                 var temp = response.data.current_condition[0].FeelsLikeC;
                 marker.weather("<div class=\"temp-status\"><strong>" + temp + "°C </strong>, " + status);

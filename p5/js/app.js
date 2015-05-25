@@ -81,6 +81,7 @@ var ViewModel = function () {
         google.maps.event.addListener(marker, 'click', function(event) {
             self.markersList().forEach(function(item){
                 if(item.marker === marker){
+                    self.getUberTimeEstimate(item);
                     self.setSelected(item);
                 }
             });

@@ -59,7 +59,7 @@ var ViewModel = function () {
             marker.infowindow.open(self.map, marker.marker);
         }
         self.selectedMarker(marker);
-        self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/green-dot.png");
+        self.selectedMarker().marker.setIcon("https://maps.google.com/mapfiles/ms/icons/green-dot.png");
         self.markersList()[self.markersList().indexOf(marker)].color("#33CC33");
     }
     
@@ -68,7 +68,7 @@ var ViewModel = function () {
             self.markersList()[self.markersList().indexOf(self.selectedMarker())].color("black");
             if(self.selectedMarker().infowindow){
                 self.selectedMarker().infowindow.close();
-                self.selectedMarker().marker.setIcon("http://maps.google.com/mapfiles/ms/icons/red-dot.png");
+                self.selectedMarker().marker.setIcon("https://maps.google.com/mapfiles/ms/icons/red-dot.png");
             }
         }
     }
@@ -81,6 +81,7 @@ var ViewModel = function () {
         google.maps.event.addListener(marker, 'click', function(event) {
             self.markersList().forEach(function(item){
                 if(item.marker === marker){
+                    self.getUberTimeEstimate(item);
                     self.setSelected(item);
                 }
             });
@@ -181,6 +182,8 @@ var ViewModel = function () {
     // Uses open weather map API
 	self.getWeather = function (marker) {
 		var xmlhttp;
+        var that = this;
+        that.marker = marker;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp=new XMLHttpRequest();
 		}
@@ -190,9 +193,9 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var status = response.currently.summary;
-                var temp = response.currently.temperature;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status);
+                var status = response.data.current_condition[0].weatherDesc[0].value;
+                var temp = response.data.current_condition[0].FeelsLikeC;
+                marker.weather("<div class=\"temp-status\"><strong>" + temp + "°C </strong>, " + status);
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -201,8 +204,8 @@ var ViewModel = function () {
                 marker.weather("Weather data not found. Check your internet");
             }
 		}
-		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + function(data){console.log('test')},true);
-        console.log("https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng());
+		xmlhttp.open("GET","https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b",true);
+        console.log("https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b");
 		xmlhttp.send();
 	}
     
@@ -218,9 +221,15 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var estimate = parseInt(response.times[0].estimate);
-                console.log(estimate, response.times[0].localized_display_name + " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));
-                marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));            
+                var minutes = parseInt(Math.floor(response.times[0].estimate/60));
+                var seconds = parseInt(response.times[0].estimate) - (minutes * 60);
+                if (seconds < 10){
+                  seconds = '0' + seconds;
+                } 
+                if (minutes < 10){
+                   minutes = '0' + minutes;
+                }
+                marker.timeEstimate(response.times[0].display_name + " available in " + minutes + ":" + seconds + "<div><img src=\"images/UBER_API_RIDE BY UBER Badges_1x BLACK_16px.png\">");            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -261,8 +270,7 @@ var ViewModel = function () {
     self.init = function () {   
         self.geocoder = new google.maps.Geocoder();
         self.infowindow = new google.maps.InfoWindow();
-        //if (navigator.geolocation) {
-        if(2==3){
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},

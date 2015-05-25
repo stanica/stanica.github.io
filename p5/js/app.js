@@ -182,6 +182,8 @@ var ViewModel = function () {
     // Uses open weather map API
 	self.getWeather = function (marker) {
 		var xmlhttp;
+        var that = this;
+        that.marker = marker;
 		if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 			xmlhttp=new XMLHttpRequest();
 		}
@@ -191,9 +193,10 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var status = response.weather[0].description[0].toUpperCase() + response.weather[0].description.substring(1);
-                var temp = response.main.temp;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°C </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
+                console.log(response);
+                var status = response.data.current_condition[0].weatherDesc[0].value;
+                var temp = response.data.current_condition[0].FeelsLikeC;
+                marker.weather("<div class=\"temp-status\"><strong>" + temp + "°C </strong>, " + status);
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -202,7 +205,8 @@ var ViewModel = function () {
                 marker.weather("Weather data not found. Check your internet");
             }
 		}
-		xmlhttp.open("GET","http://api.openweathermap.org/data/2.5/weather?lat="+marker.lat()+"&lon="+marker.lng()+"&units=metric",true);
+		xmlhttp.open("GET","https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b",true);
+        console.log("https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b");
 		xmlhttp.send();
 	}
     

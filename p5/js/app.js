@@ -183,7 +183,7 @@ var ViewModel = function () {
 	self.getWeather = function (marker) {
 		
         var that = this;
-        that.updateWeather(data) {
+        that.updateWeather = function(data){
             console.log(marker.city());
             console.log("working");
             console.log(JSON.parse(data));

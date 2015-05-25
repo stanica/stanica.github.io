@@ -192,7 +192,7 @@ var ViewModel = function () {
                 var response = JSON.parse(xmlhttp.responseText);
                 var status = response.currently.summary;
                 var temp = response.currently.temperature;
-                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status + "</div><div class=\"temp-icon\"><img src=\"http://openweathermap.org/img/w/" + response.weather[0].icon + ".png\" alt=\"Weather icon not found\"></div>");
+                marker.weather("<div class=\"temp-status\"><strong>" + Math.floor(temp) + "°F </strong>, " + status;
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -202,6 +202,7 @@ var ViewModel = function () {
             }
 		}
 		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng(),true);
+        console.log("https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng());
 		xmlhttp.send();
 	}
     
@@ -218,6 +219,7 @@ var ViewModel = function () {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
                 var estimate = parseInt(response.times[0].estimate);
+                console.log(estimate, response.times[0].localized_display_name + " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));
                 marker.timeEstimate(response.times[0].localized_display_name + " available in " + Math.floor(estimate / 60) + ":" + estimate - (Math.floor(estimate / 60) * 60));            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());

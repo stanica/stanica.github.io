@@ -229,7 +229,7 @@ var ViewModel = function () {
                 if (minutes < 10){
                    minutes = '0' + minutes;
                 }
-                marker.timeEstimate(response.times[0].display_name + " available in " + minutes + ":" + seconds);            
+                marker.timeEstimate(response.times[0].display_name + " available in " + minutes + ":" + seconds + "<div><img src=\"images/UBER_API_RIDE BY UBER Badges_1x BLACK_16px.png\">");            
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -270,8 +270,7 @@ var ViewModel = function () {
     self.init = function () {   
         self.geocoder = new google.maps.Geocoder();
         self.infowindow = new google.maps.InfoWindow();
-        //if (navigator.geolocation) {
-        if(2==3){
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},

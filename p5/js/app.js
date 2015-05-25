@@ -204,10 +204,10 @@ var ViewModel = function () {
             }
 		}
         
-        that.updateWeather = function(data) {
+        function updateWeather(data) {
             console.log(marker.city());
         }
-		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=that.updateWeather",true);
+		xmlhttp.open("GET","https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng() + "?callback=updateWeather",true);
         console.log("https://api.forecast.io/forecast/b0fcc4c15841631a47a4b09db6693dc3/"+marker.lat()+","+marker.lng());
 		xmlhttp.send();
 	}

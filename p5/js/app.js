@@ -205,7 +205,6 @@ var ViewModel = function () {
             }
 		}
 		xmlhttp.open("GET","https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b",true);
-        console.log("https://api.worldweatheronline.com/free/v2/weather.ashx?q=" + marker.lat() + "," + marker.lng() + "&format=json&num_of_days=1&fx=no&key=7d573f58be1a67cebb1bbd66a728b");
 		xmlhttp.send();
 	}
     

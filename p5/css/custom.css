@@ -117,3 +117,19 @@ html, body, .container{
 .temp-icon {
     margin-top: -20px;
 }
+
+.button {
+    background-image: url('../images/UBER_API_Button_1x_Grey_hard edge.png');
+    background-size: cover;
+    width: 280px;
+    height: 44px;
+    margin: 0 auto;
+}
+
+.time {
+    text-align: right;
+    margin-top: 2%;
+    padding-top: 12px;
+    padding-right: 14px;
+	font-size: 14px;
+}

@@ -60,7 +60,7 @@ var ViewModel = function () {
         }
         self.selectedMarker(marker);
         self.selectedMarker().marker.setIcon("https://maps.google.com/mapfiles/ms/icons/green-dot.png");
-        self.markersList()[self.markersList().indexOf(marker)].color("#33CC33");
+        self.markersList()[self.markersList().indexOf(marker)].color("#33cc33");
     }
     
     self.setDeselected = function () {
@@ -208,6 +208,24 @@ var ViewModel = function () {
 		xmlhttp.send();
 	}
     
+	self.deepLink = function(marker) {
+		var uberClientId = "p3CmieGWLuGFN5Bjf_xVBLpG2b0iPc6j";
+		var uberServerToken = "RN3VFOEudx5K5FeYkKGIdGFwXfOwd5YSGq4ax-0N";
+		var userLatitude = marker.lat();
+		var userLongitude = marker.lng();
+		// Redirect to Uber API via deep-linking to the mobile web-app
+		var uberURL = "https://m.uber.com/sign-up?";
+
+		// Add parameters
+		uberURL += "client_id=" + uberClientId;
+		if (typeof userLatitude != typeof undefined) uberURL += "&" + "pickup_latitude=" + userLatitude;
+		if (typeof userLongitude != typeof undefined) uberURL += "&" + "pickup_longitude=" + userLongitude;
+		uberURL += "&" + "dropoff_nickname=" + "Rob";
+
+		// Redirect to Uber
+		return uberURL;
+	}
+	
     // Uses UBER api
     self.getUberTimeEstimate = function (marker) {
 		var xmlhttp;
@@ -220,15 +238,14 @@ var ViewModel = function () {
 		xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState==4 && xmlhttp.status==200) {
                 var response = JSON.parse(xmlhttp.responseText);
-                var minutes = parseInt(Math.floor(response.times[0].estimate/60));
-                var seconds = parseInt(response.times[0].estimate) - (minutes * 60);
-                if (seconds < 10){
-                  seconds = '0' + seconds;
-                } 
-                if (minutes < 10){
-                   minutes = '0' + minutes;
-                }
-                marker.timeEstimate(response.times[0].display_name + " available in " + minutes + ":" + seconds + "<div><img src=\"images/UBER_API_RIDE BY UBER Badges_1x BLACK_16px.png\">");            
+				var result = "UBER UNAVAILABLE";
+                marker.timeEstimate("<div class=\"button\"><p class=\"time\">" + result + "</p></div>");   
+				if(response.times[2]){
+					var minutes = parseInt(Math.floor(response.times[2].estimate/60));
+					var seconds = parseInt(response.times[2].estimate) - (minutes * 60);
+					result = "GET A RIDE IN " + minutes + " MIN";
+					marker.timeEstimate("<a onclick=\"deepLink()\" href=\"" + self.deepLink(marker) + "\"><div class=\"button\"><p class=\"time\">" + result + "</p></div></a>");
+				}       
                 if(marker.infowindow){
                     marker.infowindow.setContent(marker.content());
                 }
@@ -269,7 +286,8 @@ var ViewModel = function () {
     self.init = function () {   
         self.geocoder = new google.maps.Geocoder();
         self.infowindow = new google.maps.InfoWindow();
-        if (navigator.geolocation) {
+        //if (navigator.geolocation) {
+			if(2==3){
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},

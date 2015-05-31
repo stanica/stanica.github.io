@@ -69,8 +69,9 @@ body,
 }
 
 .col-mid {
+    display: table-cell;
     width: 2%;
-    font-size: 20pt;
+    font-size: 1.4em;
     text-align: center;
 }
 
@@ -147,4 +148,16 @@ body,
 .offline {
     display: none;
     width: 82%;
+}
+
+@media(min-width: 350px){
+    html, body,.container{
+        font-size:12px;
+    }
+}
+
+@media(min-width: 1200px){
+    .container{
+        font-size:17px;
+    }
 }

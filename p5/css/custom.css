@@ -10,7 +10,7 @@ html,
 body,
 .container {
     height: 100%;
-    font-size: 13pt;
+    font-size: 17px;
 }
 
 .container {
@@ -146,4 +146,5 @@ body,
 
 .offline {
     display: none;
+    width: 82%;
 }

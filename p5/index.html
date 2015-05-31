@@ -13,17 +13,19 @@
     <script>
         $(function(){
             var $offline = $('.offline');
-
+            var $main = $('.main');
+            var $mid = $('.col-mid');
             Offline.on('confirmed-down', function () {
-                $('.list-item').hide();
+                $main.hide();
+                $mid.hide();
                 $offline.show();
             });
 
             Offline.on('confirmed-up', function () {
-                $('.list-item').show();
-                $offline.hide();
+                $main.hide();
+                $mid.show();
+                $offline.show();
             });
-
         });
     </script>
 </head>
@@ -41,7 +43,7 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="col-left" data-bind="foreach: filteredMarkers, visible: markersList().length > 0">
+        <div class="col-left main" data-bind="foreach: filteredMarkers, visible: markersList().length > 0">
             <div class="list-item">
                 <div class="item-title" data-bind="click: $parent.setSelected($data), text: city, style: { color: $data.color()}">
                 </div>
@@ -50,7 +52,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-left" data-bind="visible: markersList().length === 0">
+        <div class="col-left main" data-bind="visible: markersList().length === 0">
             <div class="list-item" data-bind="">
                 <div class="item-title-full">
                     Click anywhere on the map to add a marker.

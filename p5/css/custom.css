@@ -152,12 +152,22 @@ body,
 
 @media(min-width: 350px){
     html, body,.container{
-        font-size:12px;
+        font-size:11px;
+    }
+    .button {
+        width: inherit;
+        background-image: none;
+    }
+    .col-mid {
+        display: none;
     }
 }
 
 @media(min-width: 1200px){
     .container{
         font-size:17px;
+    }
+    .col-mid{
+        display: table-cell;
     }
 }

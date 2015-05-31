@@ -20,6 +20,11 @@
                 viewModel.disconnected(false);
             });
         });
+        var run = function(){
+            if (Offline.state === 'up')
+                Offline.check();
+        }
+        setInterval(run, 5000);
     </script>
 </head>
 <body>

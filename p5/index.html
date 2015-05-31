@@ -5,8 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Project 5</title>
     <link rel="stylesheet" href="css/custom.css">
-    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/offline-theme-chrome.css">
+    <link rel="stylesheet" href="css/offline-language-english-indicator.css">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/offline.min.js"></script>
+    <script>
+        $(function(){
+
+            var
+                    $online = $('.online'),
+                    $offline = $('.offline');
+
+            Offline.on('confirmed-down', function () {
+               console.log('down');
+            });
+
+            Offline.on('confirmed-up', function () {
+                console.log('up');
+            });
+
+        });
+    </script>
 </head>
 <body>
 <header>
@@ -47,7 +67,7 @@
             </div>
         </div>
         <div class="col-right">
-            <div id="map-canvas"></div>
+            <div id="map-canvas" class="map-canvas"></div>
         </div>
     </div>
 </div>

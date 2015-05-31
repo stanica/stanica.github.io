@@ -1,12 +1,14 @@
 * {
-    margin:0;
-    padding:0;
+    padding: 0;
+    margin: 0;
 }
 html {
     font-family: 'Lato', sans-serif;
 }
 
-html, body, .container{
+html,
+body,
+.container {
     height: 100%;
     font-size: 13pt;
 }
@@ -30,24 +32,24 @@ html, body, .container{
     padding-bottom: 10px;
 }
 
-    .filter-clear {
-        right: 20px;
-        cursor: pointer;
-        position: relative;
-    }
+.filter-clear {
+    right: 20px;
+    cursor: pointer;
+    position: relative;
+}
     
-    .filter-clear:hover {
-        font-weight: bold;
-    }
-
-.clearable{
-  padding: 3px 18px 3px 4px;
-  margin-left: 10px;
-  font-size: 13pt;
-  width: 200px;
+.filter-clear:hover {
+    font-weight: bold;
 }
 
-#map-canvas {
+.clearable{
+    padding: 3px 18px 3px 4px;
+    margin-left: 10px;
+    font-size: 1em;
+    width: 200px;
+}
+
+.map-canvas {
     height: 100%;
 }
 
@@ -55,32 +57,38 @@ html, body, .container{
     height: 100%;
     display: table-row;
 }
+
 .col-left {
     display: table-cell;
     width: 18%;
 }
+
 .col-right {
     display: table-cell;
     width: 80%;
 }
+
 .col-mid {
-    width:2%;
+    width: 2%;
     font-size: 20pt;
     text-align: center;
 }
-    .top{
-        width: 2%;
-        position: fixed;
-        color: black;
-        cursor: pointer;
-    }
-    .bot {
-        width: 2%;
-        position: fixed;
-        bottom: 10px;
-        color: black;
-        cursor: pointer;
-    }
+
+.top{
+    width: 2%;
+    position: fixed;
+    color: black;
+    cursor: pointer;
+}
+
+.bot {
+    width: 2%;
+    position: fixed;
+    bottom: 10px;
+    color: black;
+    cursor: pointer;
+}
+
 
 .list-item {
     border: 1px black solid;
@@ -97,15 +105,17 @@ html, body, .container{
     width: 90%;
     cursor: pointer;
 }
-    .item-title-full{
-        width: 100%;
-    }
+
+.item-title-full{
+    width: 100%;
+}
 
 .item-clear {
     cursor: pointer;
     line-height: 50px;
     width: 10%;
 }
+
 .item-clear:hover {
     font-weight: bold;
 }
@@ -131,5 +141,5 @@ html, body, .container{
     margin-top: 2%;
     padding-top: 12px;
     padding-right: 14px;
-	font-size: 14px;
+	font-size: 1.1em;
 }

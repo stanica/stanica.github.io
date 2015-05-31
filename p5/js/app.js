@@ -75,23 +75,25 @@ var ViewModel = function () {
     }
     
     self.addMarker = function (marker) {
-        var newMarker = new Marker(marker);
-		self.getWeather(newMarker);
-        self.getUberTimeEstimate(newMarker);
-        self.markersList.push(newMarker);
-        google.maps.event.addListener(marker, 'click', function(event) {
-            self.markersList().forEach(function(item){
-                if(item.marker === marker){
-                    self.getUberTimeEstimate(item);
-                    self.setSelected(item);
-                }
-            });
-    	})
-        if(self.markersList().length > self.maxLength){
-            self.startIndex++;
+        if (!self.disconnected()) {
+            var newMarker = new Marker(marker);
+            self.getWeather(newMarker);
+            self.getUberTimeEstimate(newMarker);
+            self.markersList.push(newMarker);
+            google.maps.event.addListener(marker, 'click', function (event) {
+                self.markersList().forEach(function (item) {
+                    if (item.marker === marker) {
+                        self.getUberTimeEstimate(item);
+                        self.setSelected(item);
+                    }
+                });
+            })
+            if (self.markersList().length > self.maxLength) {
+                self.startIndex++;
+            }
+            self.segmentedMarkersList(self.markersList().slice(self.startIndex, self.startIndex + self.maxLength));
+            self.getAddress(newMarker);
         }
-        self.segmentedMarkersList(self.markersList().slice(self.startIndex, self.startIndex + self.maxLength));
-        self.getAddress(newMarker);
     }
     
     self.removeMarker = function () {

@@ -15,10 +15,12 @@
             var $offline = $('.offline');
 
             Offline.on('confirmed-down', function () {
-               $offline.show();
+                $('.list-item').hide();
+                $offline.show();
             });
 
             Offline.on('confirmed-up', function () {
+                $('.list-item').show();
                 $offline.hide();
             });
 

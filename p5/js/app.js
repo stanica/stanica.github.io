@@ -295,11 +295,13 @@ var ViewModel = function () {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},
                   zoom: 13
                 };
-                self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
+                self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 //Add marker when map is clicked
                 google.maps.event.addListener(self.map, 'click', function(event) {
-                    var marker = new google.maps.Marker({position: event.latLng, map: self.map});
-                    self.addMarker(marker);
+                    if(!self.disconnected()) {
+                        var marker = new google.maps.Marker({position: event.latLng, map: self.map});
+                        self.addMarker(marker);
+                    }
                 });
             });
         } 
@@ -309,11 +311,13 @@ var ViewModel = function () {
               center: { lat: 40.730885, lng: -73.997383},
               zoom: 13
             };
-            self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
+            self.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
             //Add marker when map is clicked
             google.maps.event.addListener(self.map, 'click', function(event) {
-                var marker = new google.maps.Marker({position: event.latLng, map: self.map});
-                self.addMarker(marker);
+                if(!self.disconnected()) {
+                    var marker = new google.maps.Marker({position: event.latLng, map: self.map});
+                    self.addMarker(marker);
+                }
             });
         }
     }

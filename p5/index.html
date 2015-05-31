@@ -6,23 +6,20 @@
     <title>Project 5</title>
     <link rel="stylesheet" href="css/custom.css">
     <link rel="stylesheet" href="css/offline-theme-chrome.css">
-    <link rel="stylesheet" href="css/offline-language-english-indicator.css">
+    <link rel="stylesheet" href="css/offline-language-english.css">
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="js/offline.min.js"></script>
     <script>
         $(function(){
-
-            var
-                    $online = $('.online'),
-                    $offline = $('.offline');
+            var $offline = $('.offline');
 
             Offline.on('confirmed-down', function () {
-               console.log('down');
+               $offline.show();
             });
 
             Offline.on('confirmed-up', function () {
-                console.log('up');
+                $offline.hide();
             });
 
         });
@@ -55,6 +52,13 @@
             <div class="list-item" data-bind="">
                 <div class="item-title-full">
                     Click anywhere on the map to add a marker.
+                </div>
+            </div>
+        </div>
+        <div class="col-left offline">
+            <div class="list-item" data-bind="">
+                <div class="item-title-full">
+                    Connection error. There seems to be a problem connecting to the internet.
                 </div>
             </div>
         </div>

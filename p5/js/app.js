@@ -286,8 +286,7 @@ var ViewModel = function () {
     self.init = function () {   
         self.geocoder = new google.maps.Geocoder();
         self.infowindow = new google.maps.InfoWindow();
-        //if (navigator.geolocation) {
-			if(2==3){
+        if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position){
                 var mapOptions = {
                   center: { lat: position.coords.latitude, lng: position.coords.longitude},

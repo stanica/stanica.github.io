@@ -143,3 +143,7 @@ body,
     padding-right: 14px;
 	font-size: 1.1em;
 }
+
+.offline {
+    display: none;
+}

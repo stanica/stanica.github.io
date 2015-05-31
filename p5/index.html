@@ -12,19 +12,12 @@
     <script src="js/offline.min.js"></script>
     <script>
         $(function(){
-            var $offline = $('.offline');
-            var $main = $('.main');
-            var $mid = $('.col-mid');
             Offline.on('confirmed-down', function () {
-                $main.hide();
-                $mid.hide();
-                $offline.show();
+                viewModel.disconnected(true);
             });
 
             Offline.on('confirmed-up', function () {
-                $main.show();
-                $mid.show();
-                $offline.hide();
+                viewModel.disconnected(false);
             });
         });
     </script>
@@ -43,7 +36,7 @@
 </header>
 <div class="container">
     <div class="row">
-        <div class="col-left main" data-bind="foreach: filteredMarkers, visible: markersList().length > 0">
+        <div class="col-left" data-bind="foreach: filteredMarkers, visible: markersList().length > 0 && !disconnected()">
             <div class="list-item">
                 <div class="item-title" data-bind="click: $parent.setSelected($data), text: city, style: { color: $data.color()}">
                 </div>
@@ -52,14 +45,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-left main" data-bind="visible: markersList().length === 0">
+        <div class="col-left" data-bind="visible: markersList().length === 0 && !disconnected()">
             <div class="list-item" data-bind="">
                 <div class="item-title-full">
                     Click anywhere on the map to add a marker.
                 </div>
             </div>
         </div>
-        <div class="col-left offline">
+        <div class="col-left" data-bind="visible: disconnected() === true">
             <div class="list-item" data-bind="">
                 <div class="item-title-full">
                     Connection error. There seems to be a problem connecting to the internet.

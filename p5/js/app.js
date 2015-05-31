@@ -28,6 +28,7 @@ var ViewModel = function () {
     self.map;
     self.startIndex = 0;
     self.maxLength = Math.floor((window.innerHeight-132) / 90); // Determines maximum number of visible markers in markers list
+    self.disconnected = ko.observable(false);
     
     self.moveUp = function (){
         // Shift view up if next marker is above first visible marker in list

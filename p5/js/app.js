@@ -271,7 +271,11 @@ var ViewModel = function () {
             if (status == google.maps.GeocoderStatus.OK) {
                 if (results[1]) {
                     self.map.setZoom(13);
-                    location.city(results[1].formatted_address);
+                    location.city(results[2].formatted_address);
+                    console.log(results);
+                    if (location.city().length > 37){
+                        location.city(location.city().substring(0,37));
+                    }
                     location.image("https://maps.googleapis.com/maps/api/streetview?size=300x150&location="+lat+","+lng+"&fov=180&heading=90&pitch=20");
                     location.infowindow = new google.maps.InfoWindow();
                     location.infowindow.setContent(location.content());

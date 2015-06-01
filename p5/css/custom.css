@@ -179,7 +179,6 @@ body,
 
     .list-item{
         display: block;
-        height: inherit;
     }
 }
 
@@ -203,6 +202,5 @@ body,
 
     .list-item {
         display: flex;
-        height: 80px;
     }
 }

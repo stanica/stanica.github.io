@@ -204,3 +204,22 @@ body,
         display: flex;
     }
 }
+
+@media(min-height: 100px){
+    .title{
+        text-align: inherit;
+        padding-left: 20px;
+    }
+    .filter{
+        margin-top: -40px;
+    }
+}
+@media(min-height: 470px){
+    .title{
+        text-align: center;
+        padding: 20px 0 20px 0;
+    }
+    .filter{
+        margin-top: inherit;
+    }
+}

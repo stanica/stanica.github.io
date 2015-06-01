@@ -161,6 +161,17 @@ body,
     .col-mid {
         display: none;
     }
+    .item-clear{
+        line-height: inherit;
+        width: inherit;
+    }
+    .item-title{
+        width: inherit;
+    }
+    .list-item{
+        display: block;
+        height: inherit;
+    }
 }
 
 @media(min-width: 1200px){
@@ -169,5 +180,16 @@ body,
     }
     .col-mid{
         display: table-cell;
+    }
+    .item-clear{
+        line-height: 50px;
+        width: 10%;
+    }
+    .item-title{
+        width: 90%;
+    }
+    .list-item {
+        display: flex;
+        height: 80px;
     }
 }

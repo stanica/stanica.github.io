@@ -154,20 +154,29 @@ body,
     html, body,.container{
         font-size:11px;
     }
+
     .button {
         width: inherit;
         background-image: none;
     }
+
     .col-mid {
         display: none;
     }
+
+    .col-left{
+        padding-right: 2%;
+    }
+
     .item-clear{
         line-height: inherit;
         width: inherit;
     }
+
     .item-title{
         width: inherit;
     }
+
     .list-item{
         display: block;
         height: inherit;
@@ -178,16 +187,20 @@ body,
     .container{
         font-size:17px;
     }
+
     .col-mid{
         display: table-cell;
     }
+
     .item-clear{
         line-height: 50px;
         width: 10%;
     }
+
     .item-title{
         width: 90%;
     }
+
     .list-item {
         display: flex;
         height: 80px;

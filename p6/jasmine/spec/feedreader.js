@@ -116,5 +116,23 @@ $(function() {
 			expect(this.content).not.toBe(this.content2);
 			done();
 		});
+		
+		afterAll(function(done) {
+			loadFeed(0, function() {
+				done();
+			});
+		});
+	});
+	
+	/* Test suite to test header text of page */
+	describe('Header Title', function() {
+		
+		/* Test to ensure header text changes when menu item is clicked */
+		it('changes to reflect menu selection', function() {
+			var original = $('.header-text');
+			$('.feed-list').find('a')[3].click();
+			var updated = $('.header-text');
+			expect(original).not.toBe(updated);
+		});
 	});
 }());

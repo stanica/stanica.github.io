@@ -2,6 +2,9 @@
 
 This project is a web-based application that reads RSS feeds. 
 
+# Set up instructions
+Simply open index.html in a modern browser to run the application and tests.
+
 #Default Tests
 
 The following default tests are implemented:
@@ -15,3 +18,4 @@ The following default tests are implemented:
 
 #Extra Tests
 7. Test that ensure when a new feed is loaded the header text changes.
+8. Test that ensures that adding a new feed updates the feed list.

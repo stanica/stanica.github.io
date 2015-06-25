@@ -16,10 +16,7 @@ $(function() {
 	describe('RSS Feeds', function() {
 		/* This is our first test - it tests to make sure that the
 		* allFeeds variable has been defined and that it is not
-		* empty. Experiment with this before you get started on
-		* the rest of this project. What happens when you change
-		* allFeeds in app.js to be an empty array and refresh the
-		* page?
+		* empty.
 		*/
 		it('are defined', function() {
 			expect(allFeeds).toBeDefined();
@@ -44,6 +41,16 @@ $(function() {
 				expect(feed.name).toBeDefined();
 				expect(feed.name.length).not.toBe(0);
 			});
+		});
+		
+		/* Test that adds additional link to list of feeds
+		*/
+		it('can be increased', function() {
+			var currentFeeds = allFeeds.length;
+			var url = 'http://www.reddit.com/r/programming/.rss';
+			addFeed(url);
+			var newFeeds = allFeeds.length;
+			expect(newFeeds).toBe(currentFeeds+1);
 		});
 	});
 
@@ -91,21 +98,21 @@ $(function() {
 			content = '';
 			content2 = '';
 			loadFeed(0, function() {
-				content = $('.feed');
+				content = $('.feed').children();
 				loadFeed(1, function(){
-					content2 = $('.feed');
+					content2 = $('.feed').children();
 					done();
 				});
 			});
-			//console.log(content, content2);
 		});	
 		
 		/* Test that ensures when a new feed is loaded by the loadFeed function that the content actually changes.
-		*/	
+		*/
 		it('changes content', function(done) {
-			console.log(content.children()[0], content2.children()[0]);
-			//this.content2 = $('.feed').find('h2')[0];	
-			//expect(this.content).not.toBe(this.content2);
+			//console.log(content[0], content2[0]);
+			for(x = 0; x < content.length; x++){
+				expect(content[x]).not.toBe(content2[x]);
+			}
 			done();
 		});
 		

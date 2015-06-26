@@ -46,11 +46,11 @@ $(function() {
 		/* Test that adds additional link to list of feeds
 		*/
 		it('can be increased', function() {
-			var currentFeeds = allFeeds.length;
 			var url = 'http://www.reddit.com/r/programming/.rss';
-			addFeed(url);
-			var newFeeds = allFeeds.length;
-			expect(newFeeds).toBe(currentFeeds+1);
+            var name = 'Reddit/Programming';
+			addFeed(name, url);
+			expect(allFeeds[allFeeds.length-1].name).toBe(name) &&
+            expect(allFeeds[allFeeds.length-1].url).toBe(url);
 		});
 	});
 
@@ -67,9 +67,9 @@ $(function() {
 		/* test that ensures the menu changes visibility when the menu icon is clicked.
 		*/
 		it('changes visibility when clicked', function() {
-			$('.menu-icon-link').trigger('click');
+			$('.menu-icon-link').click();
 			expect($('body').hasClass('menu-hidden')).toBe(false);
-			$('.menu-icon-link').trigger('click');
+			$('.menu-icon-link').click();
 			expect($('body').hasClass('menu-hidden')).toBe(true);
 		});
 	});
@@ -89,18 +89,15 @@ $(function() {
 	});
 	
 	describe('New Feed Selection', function() {
-		
-		beforeAll(function(){
-			$('.feed').empty();
-		});
-		
+		var content = '';
+		var	content2 = '';
+        
 		beforeEach(function(done) {
-			content = '';
-			content2 = '';
+            $('.feed').empty();
 			loadFeed(0, function() {
-				content = $('.feed').children();
+				content = $('.feed').find("h2")[0].innerText;
 				loadFeed(1, function(){
-					content2 = $('.feed').children();
+                content2 = $('.feed').find("h2")[0].innerText;
 					done();
 				});
 			});
@@ -108,18 +105,8 @@ $(function() {
 		
 		/* Test that ensures when a new feed is loaded by the loadFeed function that the content actually changes.
 		*/
-		it('changes content', function(done) {
-			//console.log(content[0], content2[0]);
-			for(x = 0; x < content.length; x++){
-				expect(content[x]).not.toBe(content2[x]);
-			}
-			done();
-		});
-		
-		afterAll(function(done) {
-			loadFeed(0, function() {
-				done();
-			});
+		it('changes content', function() {
+            expect(content).not.toBe(content2);
 		});
 	});
 	

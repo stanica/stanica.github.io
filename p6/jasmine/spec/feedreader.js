@@ -47,13 +47,12 @@ $(function() {
 		*/
 		it('can be increased', function() {
 			var url = 'http://www.reddit.com/r/programming/.rss';
-            var name = 'Reddit/Programming';
+			var name = 'Reddit/Programming';
 			addFeed(name, url);
 			expect(allFeeds[allFeeds.length-1].name).toBe(name) &&
-            expect(allFeeds[allFeeds.length-1].url).toBe(url);
+			expect(allFeeds[allFeeds.length-1].url).toBe(url);
 		});
 	});
-
 
 	describe('The Menu', function() {
 
@@ -88,16 +87,16 @@ $(function() {
 		});
 	});
 
-    describe('New Feed Selection', function() {
+	describe('New Feed Selection', function() {
 		var content = '';
 		var	content2 = '';
 
 		beforeEach(function(done) {
-            $('.feed').empty();
+			$('.feed').empty();
 			loadFeed(0, function() {
 				content = $('.feed').find("h2")[0].innerText;
 				loadFeed(1, function(){
-                content2 = $('.feed').find("h2")[0].innerText;
+					content2 = $('.feed').find("h2")[0].innerText;
 					done();
 				});
 			});
@@ -106,7 +105,7 @@ $(function() {
 		/* Test that ensures when a new feed is loaded by the loadFeed function that the content actually changes.
 		*/
 		it('changes content', function() {
-            expect(content).not.toBe(content2);
+			expect(content).not.toBe(content2);
 		});
 	});
 

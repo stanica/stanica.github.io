@@ -49,7 +49,7 @@ $(function() {
 			var url = 'http://www.reddit.com/r/programming/.rss';
 			var name = 'Reddit/Programming';
 			addFeed(name, url);
-			expect(allFeeds[allFeeds.length-1].name).toBe(name) &&
+			expect(allFeeds[allFeeds.length-1].name).toBe(name);
 			expect(allFeeds[allFeeds.length-1].url).toBe(url);
 		});
 	});
